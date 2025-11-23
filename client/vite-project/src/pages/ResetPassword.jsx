@@ -62,8 +62,9 @@ const ResetPassword = () => {
 
   const onOtpSubmit = (e) => {
     e.preventDefault();   
-    const otp = inputRefs.current.map(e => e.value);
-    setOtp(otp.join(""));
+    const otpArr = inputRefs.current.map(e => e.value);
+    const otp = otpArr.join("");
+    setOtp(otp);
     setIsOtpSent(true);    
   }
 
