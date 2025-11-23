@@ -46,7 +46,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='w-full flex justify-between items-center py-4 px-20 sm:24px absolute top-0'>
+    <div className='w-full flex justify-between items-center py-4 px-8 sm:px-20 absolute top-0'>
       <img onClick={navigate("/")} src={assets.logo} alt="" className='w-28 sm:w-32'/>
       {userData ? 
       <div className='h-8 w-8 flex justify-center items-center bg-black text-white relative rounded-full group'>
@@ -58,7 +58,7 @@ const Navbar = () => {
             </ul>
           </div>
       </div> : 
-      <button onClick={()=>navigate("/login")} className='flex items-center gap-2 text-grey-200 border border-grey-100 py-2 px-6 rounded-full hover:bg-gray-200 transition-all'>Login <img src={assets.arrow_icon} alt="" /></button>
+      <button onClick={()=>navigate("/login")} className='flex items-center gap-2 text-grey-200 border border-grey-100 py-2 px-7 rounded-full hover:bg-gray-200 transition-all'>Login <img src={assets.arrow_icon} alt="" /></button>
       }
       </div>
   )
