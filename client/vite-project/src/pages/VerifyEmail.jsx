@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { assets } from '../assets/assets'
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -10,7 +10,7 @@ const VerifyEmail = () => {
   axios.defaults.withCredentials = true;
   const {backendUrl, isLoggedin, userData, getUserData} = useContext(AppContent);
   const navigate = useNavigate();
-  const inputRefs = React.useRef([]);
+  const inputRefs = useRef([]);
 
   const handleInput = (e, index) => {
      if(e.target.value.length > 0 && index < inputRefs.current.length - 1){
