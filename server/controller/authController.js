@@ -67,7 +67,12 @@ module.exports.register = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: email }],
             subject: "Welcome to Rajat's platform",
-            htmlContent: htmlContent
+            htmlContent: htmlContent,
+            headers: {
+                  "api-key": process.env.BREVO_API_KEY,
+                  "content-type": "application/json"
+            }
+            
         };
     
         // Send email via Brevo SDK
@@ -207,7 +212,11 @@ module.exports.sendVerifyOtp = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Account verification OTP",
-            htmlContent: htmlContent
+            htmlContent: htmlContent,
+            headers: {
+                "api-key": process.env.BREVO_API_KEY,
+                "content-type": "application/json"
+            }
         };
 
     
@@ -342,7 +351,11 @@ module.exports.sendResetOtp = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Password Reset OTP",
-            htmlContent: htmlContent
+            htmlContent: htmlContent,
+            headers: {
+                "api-key": process.env.BREVO_API_KEY,
+                "content-type": "application/json"
+          }
         };
     
         // Send email via Brevo SDK
