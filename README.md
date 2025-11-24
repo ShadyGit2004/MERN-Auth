@@ -49,7 +49,8 @@ A full-stack authentication system built with the **MERN stack** featuring secur
 * React (Vite)
 * Axios
 * React Toastify
-* TailwindCSS (if applicable)
+* React-Router-Dom
+* TailwindCSS
 
 ### **Backend**
 
@@ -61,6 +62,7 @@ A full-stack authentication system built with the **MERN stack** featuring secur
 * Bcrypt
 * Nodemailer
 * Dotenv
+* cors
 
 ---
 
@@ -70,6 +72,7 @@ A full-stack authentication system built with the **MERN stack** featuring secur
 
 * `axios`
 * `react-toastify`
+* `react-router-dom`
 
 ### **Backend**
 
@@ -80,6 +83,7 @@ A full-stack authentication system built with the **MERN stack** featuring secur
 * `nodemailer`
 * `mongoose`
 * `dotenv`
+* `cors`
 
 ---
 
