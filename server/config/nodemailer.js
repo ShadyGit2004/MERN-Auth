@@ -4,11 +4,14 @@ const transporter = nodemailer.createTransport({
     // host : "sandbox.smtp.mailtrap.io",
     host: "smtp-relay.brevo.com",
     port: 465,
-    secure: true,   // IMPORTANT for port 465
+    secure: false,
     auth : {
         user : process.env.SMTP_USER,
         pass : process.env.SMTP_PASS,
-    }
+    },
+    tls: {
+        rejectUnauthorized: false, // avoids cert issues on Render
+    },
 });
 
 // Test SMTP connection
