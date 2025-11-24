@@ -1,7 +1,12 @@
 const userModel = require("../models/userModel");
 
 // const transporter = require("../config/nodemailer")
-const brevoClient = require("../config/nodemailer")
+// const brevoClient = require("../config/nodemailer")
+
+
+const { TransactionalEmailsApi } = require("@getbrevo/brevo");
+const brevoClient = new TransactionalEmailsApi();
+brevoClient.authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
 
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
@@ -67,12 +72,7 @@ module.exports.register = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: email }],
             subject: "Welcome to Rajat's platform",
-            htmlContent: htmlContent,
-            headers: {
-                  "api-key": process.env.BREVO_API_KEY,
-                  "content-type": "application/json"
-            }
-            
+            htmlContent: htmlContent            
         };
     
         // Send email via Brevo SDK
@@ -212,11 +212,7 @@ module.exports.sendVerifyOtp = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Account verification OTP",
-            htmlContent: htmlContent,
-            headers: {
-                "api-key": process.env.BREVO_API_KEY,
-                "content-type": "application/json"
-            }
+            htmlContent: htmlContent
         };
 
     
@@ -351,11 +347,7 @@ module.exports.sendResetOtp = async (req, res) => {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Password Reset OTP",
-            htmlContent: htmlContent,
-            headers: {
-                "api-key": process.env.BREVO_API_KEY,
-                "content-type": "application/json"
-          }
+            htmlContent: htmlContent
         };
     
         // Send email via Brevo SDK

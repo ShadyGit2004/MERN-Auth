@@ -26,8 +26,8 @@
 // module.exports = transporter;
 
 
-const { TransactionalEmailsApi } = require("@getbrevo/brevo");
-const brevoClient = new TransactionalEmailsApi();
-brevoClient.authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
+// const { TransactionalEmailsApi } = require("@getbrevo/brevo");
+// const brevoClient = new TransactionalEmailsApi();
+// brevoClient.authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
 
-module.exports = brevoClient;
+// module.exports = brevoClient;
