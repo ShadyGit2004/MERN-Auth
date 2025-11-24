@@ -1,7 +1,8 @@
 const userModel = require("../models/userModel");
 
 // const transporter = require("../config/nodemailer")
-const {brevoClient, SendSmtpEmail} = require("../config/nodemailer")
+const brevoClient = require("../config/nodemailer")
+
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
@@ -10,7 +11,7 @@ const {USER_REGISTER_TEMPLATE, EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE} =
 module.exports.register = async (req, res) => {
     let {username, email, password} = req.body; 
 
-    console.log({username, email, password});
+    // console.log({username, email, password});
 
     if(!username || !email || !password){
         return res.json({
@@ -38,9 +39,7 @@ module.exports.register = async (req, res) => {
             password : hashPassword
         });
 
-        await user.save();
-    
-        console.log(user);
+        await user.save();    
 
         const token = jwt.sign({id : user._id}, process.env.JWT_SECRET, {expiresIn : "7d"});
         
@@ -64,15 +63,15 @@ module.exports.register = async (req, res) => {
         const htmlContent = USER_REGISTER_TEMPLATE.replace("{{name}}", user.username).replace("{{email}}", email);
   
         // Prepare email
-        const sendSmtpEmail = new SendSmtpEmail({
+        const sendSmtpEmail = {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: email }],
             subject: "Welcome to Rajat's platform",
             htmlContent: htmlContent
-        });
+        };
     
         // Send email via Brevo SDK
-        await brevoClient.sendTransacEmail(sendSmtpEmail);
+        await brevoClient.sendTransacEmail(sendSmtpEmail) 
         
         return res.json({
             success : true,
@@ -182,6 +181,8 @@ module.exports.sendVerifyOtp = async (req, res) => {
         };
 
         const otp = String(Math.floor(Math.random() * 900000 + 100000));
+        
+        // console.log("verify ", otp)
 
         user.emailVerifyOtp = otp;
         user.emailVerifyOtpExpiry = Date.now() + 1 * 60 * 60 * 1000;
@@ -202,15 +203,16 @@ module.exports.sendVerifyOtp = async (req, res) => {
         .replace("{{email}}", user.email);
   
         // Prepare email
-        const sendSmtpEmail = new SendSmtpEmail({
+        const sendSmtpEmail = {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Account verification OTP",
             htmlContent: htmlContent
-        });
+        };
+
     
         // Send email via Brevo SDK
-        await brevoClient.sendTransacEmail(sendSmtpEmail);
+        await brevoClient.sendTransacEmail(sendSmtpEmail) 
 
         return res.json({
             success : true,
@@ -314,7 +316,7 @@ module.exports.sendResetOtp = async (req, res) => {
 
         const otp = String(Math.floor(Math.random() * 900000 + 100000));
 
-        console.log(otp);        
+        // console.log("reset -> ",otp);        
 
         user.passwordResetOtp = otp;
         user.passwordResetOtpExpiry = Date.now() + 10 * 60 * 1000;
@@ -329,23 +331,22 @@ module.exports.sendResetOtp = async (req, res) => {
         //     html : PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
         // };
 
-        // await transporter.sendMail(mailOptions);
-
+        // await transporter.sendMail(mailOptions);     
 
         const htmlContent = PASSWORD_RESET_TEMPLATE
         .replace("{{otp}}", otp)
         .replace("{{email}}", user.email);
   
         // Prepare email
-        const sendSmtpEmail = new SendSmtpEmail({
+        const sendSmtpEmail = {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: user.email }],
             subject: "Password Reset OTP",
             htmlContent: htmlContent
-        });
+        };
     
         // Send email via Brevo SDK
-        await brevoClient.sendTransacEmail(sendSmtpEmail);
+        await brevoClient.sendTransacEmail(sendSmtpEmail) 
 
         return res.json({
             success : true,
@@ -410,7 +411,7 @@ module.exports.resetPassword = async (req, res) => {
     } catch (e) {
         return res.json({
             success : false,
-            message : e.message
+            message : e.message + "full msg -> " + e
         })
     }
 };
