@@ -302,6 +302,8 @@ module.exports.sendResetOtp = async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
+        trans
+
         return res.json({
             success : true,
             message : "Reset OTP sent to your email"
