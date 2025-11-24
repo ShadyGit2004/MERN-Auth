@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 
-const transporter = require("../config/nodemailer")
+// const transporter = require("../config/nodemailer")
+const {brevoClient, SendSmtpEmail} = require("../config/nodemailer")
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
@@ -50,15 +51,28 @@ module.exports.register = async (req, res) => {
             maxAge : 7 * 24 * 60 * 60 * 1000,
         });
 
-        const mailOptions = {
-            from : process.env.COMPANY_EMAIL,
-            to : email,
-            subject : "Welcome to Rajat's platform",
-            // text :  `Welcome to Rajat's website. Your account has been created with email id : ${email}`,
-            html : USER_REGISTER_TEMPLATE.replace("{{name}}", user.username).replace("{{email}}", email),
-        };
+        // const mailOptions = {
+        //     from : process.env.COMPANY_EMAIL,
+        //     to : email,
+        //     subject : "Welcome to Rajat's platform",
+        //     // text :  `Welcome to Rajat's website. Your account has been created with email id : ${email}`,
+        //     html : USER_REGISTER_TEMPLATE.replace("{{name}}", user.username).replace("{{email}}", email),
+        // };
 
-        await transporter.sendMail(mailOptions);
+        // await transporter.sendMail(mailOptions);
+
+        const htmlContent = USER_REGISTER_TEMPLATE.replace("{{name}}", user.username).replace("{{email}}", email);
+  
+        // Prepare email
+        const sendSmtpEmail = new SendSmtpEmail({
+            sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
+            to: [{ email: email }],
+            subject: "Welcome to Rajat's platform",
+            htmlContent: htmlContent
+        });
+    
+        // Send email via Brevo SDK
+        await brevoClient.sendTransacEmail(sendSmtpEmail);
         
         return res.json({
             success : true,
@@ -173,15 +187,30 @@ module.exports.sendVerifyOtp = async (req, res) => {
         user.emailVerifyOtpExpiry = Date.now() + 1 * 60 * 60 * 1000;
         await user.save();
 
-        const mailOptions = {
-            from : process.env.COMPANY_EMAIL,
-            to : user.email,
-            subject : "Account verification OTP",
-            // text : `Your OTP is ${otp}. Verify your account using this OTP. `,
-            html : EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
-        };
+        // const mailOptions = {
+        //     from : process.env.COMPANY_EMAIL,
+        //     to : user.email,
+        //     subject : "Account verification OTP",
+        //     // text : `Your OTP is ${otp}. Verify your account using this OTP. `,
+        //     html : EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
+        // };
 
-        await transporter.sendMail(mailOptions);
+        // await transporter.sendMail(mailOptions);
+
+        const htmlContent = EMAIL_VERIFY_TEMPLATE
+        .replace("{{otp}}", otp)
+        .replace("{{email}}", user.email);
+  
+        // Prepare email
+        const sendSmtpEmail = new SendSmtpEmail({
+            sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
+            to: [{ email: user.email }],
+            subject: "Account verification OTP",
+            htmlContent: htmlContent
+        });
+    
+        // Send email via Brevo SDK
+        await brevoClient.sendTransacEmail(sendSmtpEmail);
 
         return res.json({
             success : true,
@@ -291,16 +320,32 @@ module.exports.sendResetOtp = async (req, res) => {
         user.passwordResetOtpExpiry = Date.now() + 10 * 60 * 1000;
         await user.save();
 
-        const mailOptions = {
-            from : process.env.COMPANY_EMAIL,
-            to : user.email,
-            subject : "Password Reset OTP",
-            // text : `Your OTP for resetting your password is ${otp}.
-            // Use this OTP to proceed with resetting your password`,            
-            html : PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
-        };
+        // const mailOptions = {
+        //     from : process.env.COMPANY_EMAIL,
+        //     to : user.email,
+        //     subject : "Password Reset OTP",
+        //     // text : `Your OTP for resetting your password is ${otp}.
+        //     // Use this OTP to proceed with resetting your password`,            
+        //     html : PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email),
+        // };
 
-        await transporter.sendMail(mailOptions);
+        // await transporter.sendMail(mailOptions);
+
+
+        const htmlContent = PASSWORD_RESET_TEMPLATE
+        .replace("{{otp}}", otp)
+        .replace("{{email}}", user.email);
+  
+        // Prepare email
+        const sendSmtpEmail = new SendSmtpEmail({
+            sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
+            to: [{ email: user.email }],
+            subject: "Password Reset OTP",
+            htmlContent: htmlContent
+        });
+    
+        // Send email via Brevo SDK
+        await brevoClient.sendTransacEmail(sendSmtpEmail);
 
         return res.json({
             success : true,
