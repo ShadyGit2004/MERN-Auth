@@ -1,12 +1,7 @@
 const userModel = require("../models/userModel");
 
 // const transporter = require("../config/nodemailer")
-// const brevoClient = require("../config/nodemailer")
-
-
-const { TransactionalEmailsApi } = require("@getbrevo/brevo");
-const brevoClient = new TransactionalEmailsApi();
-brevoClient.authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
+const brevoClient = require("../config/nodemailer")
 
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
@@ -65,13 +60,17 @@ module.exports.register = async (req, res) => {
 
         // await transporter.sendMail(mailOptions);
 
-        const htmlContent = USER_REGISTER_TEMPLATE.replace("{{name}}", user.username).replace("{{email}}", email);
+        const htmlContent = USER_REGISTER_TEMPLATE
+        .replace("{{name}}", user.username)
+        .replace("{{email}}", email)
+        .replace("{{login_url}}", process.env.CLIENT_URL)
+        .replace("{{company_name}}", process.env.COMPANY_NAME);
   
         // Prepare email
         const sendSmtpEmail = {
             sender: { name: process.env.COMPANY_NAME || "My App", email: process.env.COMPANY_EMAIL },
             to: [{ email: email }],
-            subject: "Welcome to Rajat's platform",
+            subject: `Welcome to ${process.env.COMPANY_NAME} Wesite.`,
             htmlContent: htmlContent            
         };
     
@@ -190,7 +189,7 @@ module.exports.sendVerifyOtp = async (req, res) => {
         // console.log("verify ", otp)
 
         user.emailVerifyOtp = otp;
-        user.emailVerifyOtpExpiry = Date.now() + 1 * 60 * 60 * 1000;
+        user.emailVerifyOtpExpiry = Date.now() + 24 * 60 * 60 * 1000;
         await user.save();
 
         // const mailOptions = {
@@ -324,7 +323,7 @@ module.exports.sendResetOtp = async (req, res) => {
         // console.log("reset -> ",otp);        
 
         user.passwordResetOtp = otp;
-        user.passwordResetOtpExpiry = Date.now() + 10 * 60 * 1000;
+        user.passwordResetOtpExpiry = Date.now() + 15 * 60 * 1000;
         await user.save();
 
         // const mailOptions = {

@@ -12,7 +12,7 @@ module.exports.USER_REGISTER_TEMPLATE = `<!DOCTYPE html>
         <table width="600" cellpadding="20" cellspacing="0" style="background:#ffffff; border-radius:8px;">
           <tr>
             <td align="center">
-              <h2 style="color:#333;">Welcome to <span style="color:#4f46e5;">Rajat's - MERN Authentication</span> 🎉</h2>
+              <h2 style="color:#333;">Welcome to <span style="color:#4f46e5;">{{company_name}}</span> 🎉</h2>
               <p style="font-size:16px; color:#555;">
                 Hi <strong>{{name}}</strong>,
               </p>
@@ -23,11 +23,11 @@ module.exports.USER_REGISTER_TEMPLATE = `<!DOCTYPE html>
                 <br><strong style="color:#111;">{{email}}</strong>
               </p>
 
-              // <a href="{{login_url}}" 
-              //    style="display:inline-block; padding:12px 22px; background:#4f46e5; color:#fff; 
-              //           text-decoration:none; border-radius:6px; font-size:16px; margin-top:20px;">
-              //   Go to Your Dashboard
-              // </a>
+              <a href="{{login_url}}" 
+                 style="display:inline-block; padding:12px 22px; background:#4f46e5; color:#fff; 
+                        text-decoration:none; border-radius:6px; font-size:16px; margin-top:20px;">
+                Go to Your Dashboard
+              </a>
 
               <p style="font-size:16px; color:#555; margin-top:25px;">
                 If you have any questions, feel free to reach out to our support team anytime.
@@ -35,7 +35,7 @@ module.exports.USER_REGISTER_TEMPLATE = `<!DOCTYPE html>
 
               <p style="font-size:16px; color:#333; margin-top:20px;">
                 Welcome aboard!  
-                <br><strong>The Rajat's - MERN Authentication Team</strong>
+                <br><strong>The {{company_name}} Team</strong>
               </p>
 
             </td>
@@ -43,7 +43,7 @@ module.exports.USER_REGISTER_TEMPLATE = `<!DOCTYPE html>
         </table>
 
         <p style="font-size:12px; color:#999; margin-top:15px;">
-          © 2025 Rajat's - MERN Authentication. All rights reserved.
+          © 2025 {{company_name}}. All rights reserved.
         </p>
 
       </td>
