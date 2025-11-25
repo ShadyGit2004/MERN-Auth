@@ -64,7 +64,7 @@ module.exports.register = async (req, res) => {
         .replace("{{name}}", user.username)
         .replace("{{email}}", email)
         .replace("{{login_url}}", process.env.CLIENT_URL)
-        .replace("{{company_name}}", process.env.COMPANY_NAME);
+        .replaceAll("{{company_name}}", process.env.COMPANY_NAME);
   
         // Prepare email
         const sendSmtpEmail = {
